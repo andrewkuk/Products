@@ -1,0 +1,12 @@
+#library
+  h1.title Library
+
+  table.library
+    tr 
+      th #
+      th Author
+      th Title
+    tr(ng-repeat="book in books")
+      td {{ book._id }}
+      td {{ book.author }}
+      td {{ book.title }}

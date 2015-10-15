@@ -1,0 +1,17 @@
+TODO
+- update pre-save hooks with isNew flag where it might be needed
+- loading test with Apache JMeter or any other alternative
+- move all insecure settings from config files to ENV variables
+- refactor all API calls wher active/deleted check performed manually, now it should be covered by server/auth.service
+- move all static assets to S3 storage for each release deployment
+- set tests timeouts to reasonable values after refactoring
+- switch mongo engine to WiredTiger
+- Update job queue with removeOnComplete queue.create( ... ).removeOnComplete( true ).save()
+- create document about 'debug' module usage
+- DEBUG variables to be added to wiki:
+  - tests - so far only functional tests
+  - jobs - task queue related
+    jobs.reports - task queue reports generation module
+  - api - try to guess
+  - api.helper
+  - app - generic app files

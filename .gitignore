@@ -1,0 +1,12 @@
+node_modules
+build
+design
+client/bower_components
+.DS_Store
+local.conf.coffee
+.tmp
+.idea
+.dump
+dump.rdb
+npm-debug.log
+.production
