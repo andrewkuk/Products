@@ -9,5 +9,6 @@ router.get '/', controller.index
 router.post '/', controller.sell
 router.get '/admin', adminPanel.index
 router.post '/admin', upload.single('file'), adminPanel.addGood
+router.post '/admin/vasya', adminPanel.loged
 
 module.exports = router

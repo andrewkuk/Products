@@ -33,8 +33,6 @@ module.exports.index = (req, res) ->
     console.log err
     res.send err.message
 
-#Admin add product upload img +
-# right buttom text "copiright" genarate new img don't only CSS
 module.exports.sell = (req, res) ->
   promiseArray = []
   for id, amount of req.body
