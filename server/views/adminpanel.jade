@@ -1,0 +1,19 @@
+doctype
+html
+  head
+    title Admin Panel
+  body
+    form(method="post" enctype="multipart/form-data" action="/products/admin")
+      div
+        label Image:
+        input(type="file" name="file")
+      div
+        label Price:
+        input(type="number" name="price" step='0.01' min=0 required)
+      div
+        label Description:
+        input(type="text" name="description" size=80 required)
+      div
+        label Amount:
+        input(type="number" name="amount" min=0 required)
+      input(type="submit" value="Add")

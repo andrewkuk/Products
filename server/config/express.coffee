@@ -8,6 +8,7 @@ cookieParser = require 'cookie-parser'
 config = require './environment'
 
 module.exports = (app) ->
+  #app.use express.static('../build/assets')
   env = app.get 'env'
   app.disable 'x-powered-by'
   app.set 'views', config.root + '/server/views'
@@ -23,4 +24,5 @@ module.exports = (app) ->
   if 'development' is env or 'test' is env
     app.set 'appPath', config.root + '/build'
     app.use express.static path.join config.root, 'build'
+    #console.log config.root
     app.use errorHandler()

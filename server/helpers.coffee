@@ -1,5 +1,5 @@
 # Misc helper functions which might be used over the site
-mongoose = require 'mongoose'
+
 _ = require 'lodash'
 debug = require('debug')('api')
 errorTracker = require './config/errors.tracking'
