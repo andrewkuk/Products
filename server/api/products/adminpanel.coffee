@@ -2,22 +2,7 @@ fsp = require 'fs-promise'
 gm = require 'gm'
 .subClass imageMagick: true
 path = require 'path'
-passwordHash = require 'password-hash'
 GoodsModel = require './model'
-
-login = 'Vasya'
-email = 'Vasya@gmail.com'
-hashedPassword = 'sha1$c72222b504$3$7aafeefbad115f60a8f84fdfecc3d16a4144b020'
-
-module.exports.index = (req, res) ->
-  res.render 'login'
-
-module.exports.loged = (req,res) ->
-  if req.body.login is(login or email) and passwordHash
-  .verify req.body.password, hashedPassword
-    res.render 'adminpanel'
-  else
-    res.send "Error"
 
 module.exports.addGood = (req, res) ->
   fileUrlThumb = "/assets/images/thumb/" + req.file.originalname
