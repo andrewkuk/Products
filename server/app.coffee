@@ -20,8 +20,8 @@ exports = module.exports = app = express()
 # app = express()
 server = require 'http'
   .createServer app
-require('./config/express')(app)
-require('./routes')(app)
+require('./config/express')(app, express)
+require('./routes')(app, express)
 
 # Start server
 server.listen config.port, config.ip, ->

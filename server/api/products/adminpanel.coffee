@@ -2,7 +2,7 @@ fsp = require 'fs-promise'
 gm = require 'gm'
 .subClass imageMagick: true
 path = require 'path'
-GoodsModel = require './model'
+GoodsModel = require './goodmodel'
 
 module.exports.addGood = (req, res) ->
   fileUrlThumb = "/assets/images/thumb/" + req.file.originalname

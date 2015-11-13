@@ -2,7 +2,7 @@ faker = require 'faker'
 bodyParser = require 'body-parser'
 Promise = require 'bluebird'
 fs = require 'fs'
-GoodsModel = require './model'
+GoodsModel = require './goodmodel'
 
 #products = []
 #for i in [1..10]

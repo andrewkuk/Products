@@ -1,13 +1,14 @@
 # Express configuration
 path = require 'path'
-express = require 'express'
 bodyParser = require 'body-parser'
+passport = require 'passport'
 errorHandler = require 'errorhandler'
 methodOverride = require 'method-override'
 cookieParser = require 'cookie-parser'
+session = require 'express-session'
 config = require './environment'
 
-module.exports = (app) ->
+module.exports = (app, express) ->
   #app.use express.static('../build/assets')
   env = app.get 'env'
   app.disable 'x-powered-by'
@@ -17,6 +18,9 @@ module.exports = (app) ->
   app.use bodyParser.json limit: '20mb'
   app.use methodOverride()
   app.use cookieParser()
+  app.use session {secret: 'gooooog'}
+  app.use passport.initialize()
+  app.use passport.session()
   # app.use compression()
   if 'production' is env or 'staging' is env
     app.use express.static path.join config.root, 'public'

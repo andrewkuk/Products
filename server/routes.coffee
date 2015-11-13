@@ -1,10 +1,8 @@
 # Main application routes
-express = require 'express'
-
 errors = require './components/errors'
 
-module.exports = (app) ->
-  app.use '/products', require './api/products'
+module.exports = (app, express) ->
+  app.use '/products', require('./api/products')(express.Router())
 
   # All undefined asset or api routes should return a 404
   app.route("/:url(api|auth|components|app|bower_components|assets)/*")
