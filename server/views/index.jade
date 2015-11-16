@@ -2,8 +2,9 @@ doctype
 html
   head
     title Products
+    script(src="/bower/jquery/dist/jquery.js")
   body
-    form(method="post" action="/products")
+    form(id="purchase" method="post")
       table
         thead
           tr: th(colspan='4') Products
@@ -20,4 +21,8 @@ html
               td #{good.description}
               td #{good.amount}
               td: input(style={width: '40px'} type='number' name=good._id min=0 value=0)
-      input(type="submit" value="Purchase")
+      button(value="purchase") Purchase
+      if user
+        if user.permisions.changeAmount
+          button(value="changeamount") Change Amount
+    script(src="/bower/jquery/dist/action.js")

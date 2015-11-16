@@ -2,7 +2,13 @@ fsp = require 'fs-promise'
 gm = require 'gm'
 .subClass imageMagick: true
 path = require 'path'
-GoodsModel = require './goodmodel'
+GoodsModel = require '../products/goodmodel'
+permisions = require '../users/permisions'
+userModel = require '../users/usermodel'
+roles = permisions.permissions
+
+module.exports.index = (req, res) ->
+  res.render 'adminpanel'
 
 module.exports.addGood = (req, res) ->
   fileUrlThumb = "/assets/images/thumb/" + req.file.originalname
@@ -37,3 +43,21 @@ module.exports.addGood = (req, res) ->
           res.redirect '/products'
   .catch (err) ->
     console.log err
+    
+module.exports.createUser = (req, res) ->
+  res.render 'createuser', roles: roles
+  
+module.exports.addUser = (req, res) ->
+  newUser = new userModel
+    login: req.body.login
+    email: req.body.email
+    password: userModel.hashPassword req.body.password
+    role: req.body.role
+  newUser.setPermisions()
+  newUser.save()
+  .then (user) ->
+    res.redirect '/user/createUser'
+  , (err) ->
+    if err
+      console.log err
+      res.send "This user is alredy exist"

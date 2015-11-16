@@ -15,4 +15,8 @@ goodsSchema.methods.sell = (purchaseAmount) ->
   else
     this.update amount: this.amount - purchaseAmount
 
+goodsSchema.methods.changeAmount = (newAmount) ->
+  if newAmount > 0
+    this.update amount: newAmount
+
 module.exports = mongoose.model 'Goods', goodsSchema

@@ -21,6 +21,7 @@ module.exports = (app, express) ->
   app.use session {secret: 'gooooog'}
   app.use passport.initialize()
   app.use passport.session()
+  require('./passport')(passport)
   # app.use compression()
   if 'production' is env or 'staging' is env
     app.use express.static path.join config.root, 'public'

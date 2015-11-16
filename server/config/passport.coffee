@@ -1,4 +1,4 @@
-userModel = require '../api/products/usermodel'
+userModel = require '../api/users/usermodel'
 LocalStrategy = require('passport-local').Strategy
 
 module.exports = (passport) ->
@@ -14,9 +14,9 @@ module.exports = (passport) ->
     userModel.findOne $or: [login: login,
       email: login]
     .then (user) ->
-      if !user
+      if not user
         return done null, false
-      if !user.validPassword password
+      if not user.validPassword password
         return done null, false
       return done null, user
     .catch (err) ->
