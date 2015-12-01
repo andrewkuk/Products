@@ -13,7 +13,7 @@ if(cart)
         tr
           td= product.good.price.toFixed(2)
           td #{product.good.description}
-          td: input(style={width: '40px'} type='number' min=0 value=product.quantity)
+          td: input(style={width: '40px'} type='number' min=0 value=product.quantity readonly)
           td= price.toFixed(2)
           td: a.pull-right.remove(href="/products/add/" + product.good._id) Remove
       
