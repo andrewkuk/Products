@@ -22,20 +22,21 @@ PDFDoc = require 'pdfkit'
 bindIdWithQty = (id, quantity, checking) ->
   GoodsModel.findById id
   .then (good) ->
+    goodWithQty = {}
+    goodWithQty.good = good
+    goodWithQty.quantity = parseInt(quantity)
     if checking
       if (parseInt(good.amount) - parseInt(quantity)) < 0
         console.log "err"
         Promise.reject new Error "big amount"
       else
-        goodWithQty = {}
-        goodWithQty.good = good
-        goodWithQty.quantity = parseInt(quantity)
-        return goodWithQty
+        Promise.resolve goodWithQty
     else
-      goodWithQty = {}
-      goodWithQty.good = good
-      goodWithQty.quantity = parseInt(quantity)
-      return goodWithQty
+      Promise.resolve goodWithQty
+      #goodWithQty = {}
+      #goodWithQty.good = good
+      #goodWithQty.quantity = parseInt(quantity)
+      #return goodWithQty
 
 module.exports.index = (req, res) ->
   GoodsModel.find {}
@@ -124,7 +125,7 @@ module.exports.check = (req, res) ->
     goodWithQty.good.sell goodWithQty.quantity
   .then (goods) ->
     #create PDF
-    filePath = './build/assets/checks/'
+    filePath = './build/assets/app/checks/'
     fileName = req.sessionID + '.pdf'
     fileUrl = filePath + fileName
     check = new PDFDoc
