@@ -26,7 +26,7 @@ html
               td #{good.amount}
               td: input(style={width: '40px'} type='number' name=good._id min=0 value=0)
       button(id="add") Add to cart
-      button(value="purchase") Purchase
+      // button(value="purchase") Purchase
       if user
         if user.permisions.changeAmount
           button(value="changeamount") Change Amount
