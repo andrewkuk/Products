@@ -2,6 +2,7 @@ mongoose = require 'mongoose'
 
 goodsSchema = mongoose.Schema
   #_id: Number
+  #purchaseAmount: Number
   price: Number
   description: String
   amount: Number
@@ -10,13 +11,14 @@ goodsSchema = mongoose.Schema
     full: String
   
 goodsSchema.methods.sell = (purchaseAmount) ->
-  if this.amount - purchaseAmount < 0
-    Promise.reject new Error "big amount"
-  else
-    this.update amount: this.amount - purchaseAmount
+  #if this.amount - purchaseAmount < 0
+    #Promise.reject new Error "big amount"
+  #else
+  this.amount -= purchaseAmount
+  this.save()
 
 goodsSchema.methods.changeAmount = (newAmount) ->
-  if newAmount > 0
-    this.update amount: newAmount
+  this.amount = newAmount
+  this.save()
 
 module.exports = mongoose.model 'Goods', goodsSchema

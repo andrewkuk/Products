@@ -3,10 +3,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV or 'development'
 
 express = require 'express'
-mongoose = require 'mongoose'
-mongoose.connect 'mongodb://localhost/test'
-db = mongoose.connection
-db.on 'error', console.error.bind console, 'connection error:'
 config = require './config/environment'
 
 env = process.env.NODE_ENV

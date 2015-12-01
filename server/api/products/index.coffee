@@ -7,3 +7,6 @@ module.exports = (router) ->
   router.post '/changeamount',
     permissions.checkChangeAmount,
     controller.changeAmount
+  router.post '/addToCart', controller.addToCart
+  router.get '/add/:id', controller.remove
+  router.get '/checkout', controller.check

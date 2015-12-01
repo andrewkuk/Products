@@ -1,0 +1,20 @@
+if(cart)
+  - var totalPrice = 0
+  each product in cart
+    li
+      - var price = product.quantity * product.good.price
+      - totalPrice = price + totalPrice
+      a.pull-right.remove(href="/products/add/" + product.good._id) Remove
+      | #{product.good.price}
+      | #{product.good.description}
+      | #{product.quantity}
+      | 
+      = price.toFixed(2)
+  li.divider
+  li.pull-right Total Price = 
+    = totalPrice.toFixed(2)
+  li.divider
+  li.divider
+  li
+    a(href='/products/checkout' id='check').pull-right Checkout
+  script(src="/assets/js/cartdata.js")

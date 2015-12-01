@@ -6,6 +6,11 @@ errorHandler = require 'errorhandler'
 methodOverride = require 'method-override'
 cookieParser = require 'cookie-parser'
 session = require 'express-session'
+#mongoStore = require('connect-mongo')(session)
+mongoose = require 'mongoose'
+mongoose.connect 'mongodb://localhost/test'
+db = mongoose.connection
+db.on 'error', console.error.bind console, 'connection error:'
 config = require './environment'
 
 module.exports = (app, express) ->
@@ -18,7 +23,7 @@ module.exports = (app, express) ->
   app.use bodyParser.json limit: '20mb'
   app.use methodOverride()
   app.use cookieParser()
-  app.use session {secret: 'gooooog'}
+  app.use session { secret: 'gooooog' }
   app.use passport.initialize()
   app.use passport.session()
   require('./passport')(passport)

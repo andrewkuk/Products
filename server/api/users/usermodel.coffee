@@ -28,3 +28,6 @@ userSchema.methods.setPermisions = () ->
   this.permisions.createUser = permisions.permissions[this.role].createUser
 
 module.exports = mongoose.model 'User', userSchema
+
+# add cart like widget or like another link to page with cart
+# pdf with amount name images and total price to pay

@@ -18,6 +18,8 @@
 #user.setPermisions()
   
 module.exports.index = (req, res) ->
+  #console.log req.session
+  #console.log req
   #userModel.find {}
   #.then (users) ->
     #for user in users

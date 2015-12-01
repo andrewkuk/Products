@@ -2,8 +2,12 @@ doctype
 html
   head
     title Products
+    link(href="/bower/bootstrap/dist/css/bootstrap.css", rel="stylesheet")
     script(src="/bower/jquery/dist/jquery.js")
+    script(src="/bower/bootstrap/dist/js/bootstrap.js")
   body
+    #cart
+      include ./cart
     form(id="purchase" method="post")
       table
         thead
@@ -17,12 +21,13 @@ html
             tr
               td: a(href=good.image.full)
                 img(src=good.image.thumb)
-              td #{good.price}
+              td= good.price.toFixed(2)
               td #{good.description}
               td #{good.amount}
               td: input(style={width: '40px'} type='number' name=good._id min=0 value=0)
+      button(id="add") Add
       button(value="purchase") Purchase
       if user
         if user.permisions.changeAmount
           button(value="changeamount") Change Amount
-    script(src="/bower/jquery/dist/action.js")
+      script(src="/assets/js/action.js")

@@ -1,0 +1,17 @@
+.btn-group.pull-right
+  if (!cart)
+    button.btn.btn-lg
+      i.glyphicon-shopping-cart
+      b Cart - 0 
+  else
+    button.btn.btn-lg(data-toggle="modal", data-target="#myModal")
+      i.glyphicon-shopping-cart
+      b  Cart - #{cart.length} 
+      span.caret
+    #myModal.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          ul.modal-body
+            #cartData
+              include ./cartdata
+    script(src="/assets/js/cart.js")
