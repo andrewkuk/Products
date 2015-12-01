@@ -12,10 +12,10 @@ html
       table
         thead
           tr: th(colspan='4') Products
-          tr: th Image
-            th Price 
-            th Description
-            th Amount
+          tr: th Image &nbsp
+            th Price &nbsp
+            th Description &nbsp
+            th Amount &nbsp
         tbody
           each good in goods
             tr
@@ -24,7 +24,7 @@ html
               td= good.price.toFixed(2)
               td #{good.description}
               td #{good.amount}
-              td: input(style={width: '40px'} type='number' name=good._id min=0 value=0)
+              td: input(style={width: '50px'} type='number' name=good._id min=0 value=0)
       button(id="add") Add to cart
       // button(value="purchase") Purchase
       if user
