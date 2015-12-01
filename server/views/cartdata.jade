@@ -1,20 +1,42 @@
 if(cart)
-  - var totalPrice = 0
-  each product in cart
-    li
-      - var price = product.quantity * product.good.price
-      - totalPrice = price + totalPrice
-      a.pull-right.remove(href="/products/add/" + product.good._id) Remove
-      | #{product.good.price}
-      | #{product.good.description}
-      | #{product.quantity}
-      | 
-      = price.toFixed(2)
-  li.divider
-  li.pull-right Total Price = 
-    = totalPrice.toFixed(2)
-  li.divider
-  li.divider
-  li
-    a(href='/products/checkout' id='check').pull-right Checkout
-  script(src="/assets/app/js/cartdata.js")
+  table
+    thead
+      tr: th Price &nbsp
+        th Description &nbsp
+        th Quantity &nbsp
+        th Total Price
+    tbody
+      - var totalPrice = 0
+      each product in cart
+        - var price = product.quantity * product.good.price
+        - totalPrice = price + totalPrice
+        tr
+          td= product.good.price.toFixed(2)
+          td #{product.good.description}
+          td: input(style={width: '40px'} type='number' min=0 value=product.quantity)
+          td= price.toFixed(2)
+          td: a.pull-right.remove(href="/products/add/" + product.good._id) Remove
+      
+  .modal-footer
+    p Final Price = &nbsp
+      = totalPrice.toFixed(2)
+    a(href='/products/checkout' id='check')
+      button Checkout
+//  each product in cart
+//    li
+//      - var price = product.quantity * product.good.price
+//      - totalPrice = price + totalPrice
+//      a.pull-right.remove(href="/products/add/" + product.good._id) Remove
+//      = product.good.price.toFixed(2) + " "
+//      | #{product.good.description}
+//      | #{product.quantity}
+//      | 
+//      = price.toFixed(2)
+//  li.divider
+//  li.pull-right Total Price = 
+//    = totalPrice.toFixed(2)
+//  li.divider
+//  li.divider
+//  li
+//    a(href='/products/checkout' id='check').pull-right Checkout
+script(src="/assets/app/js/cartdata.js")

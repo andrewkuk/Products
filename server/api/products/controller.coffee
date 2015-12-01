@@ -22,21 +22,15 @@ PDFDoc = require 'pdfkit'
 bindIdWithQty = (id, quantity, checking) ->
   GoodsModel.findById id
   .then (good) ->
-    goodWithQty = {}
-    goodWithQty.good = good
-    goodWithQty.quantity = parseInt(quantity)
-    if checking
-      if (parseInt(good.amount) - parseInt(quantity)) < 0
-        console.log "err"
-        Promise.reject new Error "big amount"
-      else
-        Promise.resolve goodWithQty
-    else
-      Promise.resolve goodWithQty
-      #goodWithQty = {}
-      #goodWithQty.good = good
-      #goodWithQty.quantity = parseInt(quantity)
-      #return goodWithQty
+    new Promise (resolve, reject) ->
+      if checking
+        if (parseInt(good.amount) - parseInt(quantity)) < 0
+          console.log "err"
+          reject new Error "big amount"
+      goodWithQty = {}
+      goodWithQty.good = good
+      goodWithQty.quantity = parseInt(quantity)
+      resolve goodWithQty
 
 module.exports.index = (req, res) ->
   GoodsModel.find {}
@@ -53,10 +47,12 @@ module.exports.sell = (req, res) ->
   for id, quantity of req.body
     if parseInt("#{quantity}") isnt 0
       promiseArray.push bindIdWithQty "#{id}", "#{quantity}", true
-  Promise.map promiseArray, (goodWithQty) ->
-    goodWithQty.good.sell goodWithQty.quantity
-  .then (goods) ->
-    res.redirect '/products'
+  Promise.all promiseArray
+  .then (goodsWithQty) ->
+    Promise.map promiseArray, (goodWithQty) ->
+      goodWithQty.good.sell goodWithQty.quantity
+    .then (goods) ->
+      res.redirect '/products'
   .catch (err) ->
     console.log err
     res.send String fs.readFileSync __dirname + '/erroramount.html'
@@ -114,62 +110,66 @@ module.exports.remove = (req, res) ->
   console.log req.session.cart.length
   if not req.session.cart.length
     delete req.session.cart
-  res.render "cartdata", cart: req.session.cart
+    res.send req.session.cart
+  else  
+    res.render "cartdata", cart: req.session.cart
   #res.redirect '/products'
   
 module.exports.check = (req, res) ->
   promiseArray = []
   for product in req.session.cart
     promiseArray.push bindIdWithQty product.good._id, product.quantity, true
-  Promise.map promiseArray, (goodWithQty) ->
-    goodWithQty.good.sell goodWithQty.quantity
-  .then (goods) ->
-    #create PDF
-    filePath = './build/assets/app/checks/'
-    fileName = req.sessionID + '.pdf'
-    fileUrl = filePath + fileName
-    check = new PDFDoc
-    stream = check.pipe fs.createWriteStream fileUrl
-    lineSpace = 0
-    finalPrice = 0
-    width = 70
-    y = 100
-    check.text "Description", 200, 30,
-      width: width
-      align: 'center'
-    check.text "Price", 270, 30,
-      width: width
-      align: 'center'
-    check.text "Quantity", 340, 30,
-      width: width
-      align: 'center'
-    check.text "Total Price", 410, 30,
-      align: 'center'
-    for product in req.session.cart
-      quantityPrice = (product.good.price * product.quantity).toFixed(2)
-      finalPrice += parseFloat quantityPrice
-      #check.image "build/" + product.good.image.thumb, 50, 50 + lineSpace
-      check.text product.good.description, 200, y + lineSpace,
-        align: 'center'
+  Promise.all promiseArray
+  .then (goodsWithQty) ->
+    Promise.map promiseArray, (goodWithQty) ->
+      goodWithQty.good.sell goodWithQty.quantity
+    .then (goods) ->
+      #create PDF
+      filePath = './build/assets/app/checks/'
+      fileName = req.sessionID + '.pdf'
+      fileUrl = filePath + fileName
+      check = new PDFDoc
+      stream = check.pipe fs.createWriteStream fileUrl
+      lineSpace = 0
+      finalPrice = 0
+      width = 70
+      y = 100
+      check.text "Description", 200, 30,
         width: width
-      check.text product.good.price.toFixed(2), 270, y + lineSpace,
         align: 'center'
+      check.text "Price", 270, 30,
         width: width
-      check.text product.quantity, 340, y + lineSpace,
         align: 'center'
+      check.text "Quantity", 340, 30,
         width: width
-      check.text quantityPrice, 410, y + lineSpace,
+        align: 'center'
+      check.text "Total Price", 410, 30,
+        align: 'center'
+      for product in req.session.cart
+        quantityPrice = (product.good.price * product.quantity).toFixed(2)
+        finalPrice += parseFloat quantityPrice
+        #check.image "build/" + product.good.image.thumb, 50, 50 + lineSpace
+        check.text product.good.description, 200, y + lineSpace,
+          align: 'center'
+          width: width
+        check.text product.good.price.toFixed(2), 270, y + lineSpace,
+          align: 'center'
+          width: width
+        check.text product.quantity, 340, y + lineSpace,
+          align: 'center'
+          width: width
+        check.text quantityPrice, 410, y + lineSpace,
+          align: 'right'
+        lineSpace += 128
+        if lineSpace > 550
+          check.addPage()
+          lineSpace = 0
+      check.text "Final Price = " + finalPrice.toFixed(2), 350, 110 + lineSpace,
         align: 'right'
-      lineSpace += 128
-      if lineSpace > 550
-        check.addPage()
-        lineSpace = 0
-    check.text "Final Price = " + finalPrice.toFixed(2), 350, 110 + lineSpace,
-      align: 'right'
-    check.end()
-    stream.on 'finish', () ->
-      delete req.session.cart
-      res.download fileUrl, "check.pdf"
+      check.end()
+      stream.on 'finish', () ->
+        delete req.session.cart
+        res.download fileUrl, "check.pdf"
   .catch (err) ->
     console.log err
     res.send String fs.readFileSync __dirname + '/erroramount.html'
