@@ -104,16 +104,30 @@ module.exports.addToCart = (req, res) ->
     
 module.exports.remove = (req, res) ->
   console.log req.params.id
-  console.log req.session.cart
+  console.log typeof req.session.cart
   req.session.cart = req.session.cart.filter (product) ->
     return product.good._id isnt req.params.id
   console.log req.session.cart.length
   if not req.session.cart.length
     delete req.session.cart
     res.send req.session.cart
-  else  
+  else
     res.render "cartdata", cart: req.session.cart
   #res.redirect '/products'
+
+module.exports.changeQuantity = (req, res) ->
+  console.log req.params
+  console.log req.body
+  #cart = req.session.cart
+  #good = cart.find (element, index, cart) ->
+    #if element.good._id is req.params.id
+      #return element
+  req.session.cart = req.session.cart.filter (product) ->
+    if product.good._id is req.params.id
+      product.quantity = parseInt req.body.quantity
+    return product
+  console.log req.session.cart
+  res.render "cartdata", cart: req.session.cart
   
 module.exports.check = (req, res) ->
   promiseArray = []

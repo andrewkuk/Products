@@ -10,3 +10,4 @@ module.exports = (router) ->
   router.post '/addToCart', controller.addToCart
   router.get '/add/:id', controller.remove
   router.get '/checkout', permissions.checkPurchase, controller.check
+  router.post '/changequa/:id', controller.changeQuantity
