@@ -15,7 +15,7 @@ $('#add').click(function(event) {
     if(data == "error")
       alert("You can't buy more than in stock");
     else {
-      $('input').val('0');
+      $('.quantity').val('0');
       $('#cart').html(data);
     }
   }

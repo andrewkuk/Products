@@ -24,3 +24,28 @@ $('.remove').click(function(event) {
 $('#check').click(function(event) {
   $('#myModal').modal('hide');
 });
+$('.finalvalue').change(function () {
+  if($(this).val() > 0) 
+    $.ajax({
+      url: 'products/changequa/' + $(this).attr('name'),
+      type: "POST",
+      data: {'quantity': $(this).val()},
+      success: function(data) {
+      console.log(data);
+      $('#cartData').html(data);
+      }
+    });
+  else {
+    $(this).val(1);
+    $.ajax({
+      url: 'products/changequa/' + $(this).attr('name'),
+      type: "POST",
+      data: {'quantity': $(this).val()},
+      success: function(data) {
+      console.log(data);
+      $('#cartData').html(data);
+      }
+    });
+    alert("Enter a positive number");
+  }
+});
