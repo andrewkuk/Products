@@ -24,6 +24,9 @@ $('.remove').click(function(event) {
 $('#check').click(function(event) {
   $('#myModal').modal('hide');
 });
+$('.finalvalue').focusin(function() {
+  $(this).data('prev', $(this).val());
+});
 $('.finalvalue').change(function () {
   if($(this).val() > 0) 
     $.ajax({
@@ -32,20 +35,16 @@ $('.finalvalue').change(function () {
       data: {'quantity': $(this).val()},
       success: function(data) {
       console.log(data);
-      $('#cartData').html(data);
+      if(data == "big quantity") {
+        alert("You can't buy more than in stock");
+        $('#cartData').html($('#cartData').html());
+      }
+      else
+        $('#cartData').html(data);
       }
     });
   else {
-    $(this).val(1);
-    $.ajax({
-      url: 'products/changequa/' + $(this).attr('name'),
-      type: "POST",
-      data: {'quantity': $(this).val()},
-      success: function(data) {
-      console.log(data);
-      $('#cartData').html(data);
-      }
-    });
+    $(this).val($(this).data('prev'));
     alert("Enter a positive number");
   }
 });

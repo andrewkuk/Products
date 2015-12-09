@@ -1,9 +1,9 @@
 if(cart)
   table
     thead
-      tr: th Price &nbsp
-        th Description &nbsp
-        th Quantity &nbsp
+      tr: th Price &nbsp;
+        th Description &nbsp;
+        th Quantity &nbsp;
         th Total Price
     tbody
       - var totalPrice = 0
@@ -13,12 +13,12 @@ if(cart)
         tr
           td= product.good.price.toFixed(2)
           td #{product.good.description}
-          td: input.finalvalue(style={width: '50px'} name=product.good._id type='number' min=0 value=product.quantity)
+          td: input.finalvalue(style={width: '50px'} name=product.good._id type='number' min=1 value=product.quantity)
           td= price.toFixed(2)
           td: a.pull-right.remove(href="/products/add/" + product.good._id) Remove
       
   .modal-footer
-    p Final Price = &nbsp
+    p Final Price = &nbsp;
       = totalPrice.toFixed(2)
     a(href='/products/checkout' id='check')
       button Checkout

@@ -116,18 +116,18 @@ module.exports.remove = (req, res) ->
   #res.redirect '/products'
 
 module.exports.changeQuantity = (req, res) ->
-  console.log req.params
-  console.log req.body
-  #cart = req.session.cart
-  #good = cart.find (element, index, cart) ->
-    #if element.good._id is req.params.id
-      #return element
+  error = null
   req.session.cart = req.session.cart.filter (product) ->
     if product.good._id is req.params.id
-      product.quantity = parseInt req.body.quantity
+      if (product.good.amount - parseInt req.body.quantity) >= 0
+        product.quantity = parseInt req.body.quantity
+      else
+        error = "big quantity"
     return product
-  console.log req.session.cart
-  res.render "cartdata", cart: req.session.cart
+  if error
+    res.send error
+  else
+    res.render "cartdata", cart: req.session.cart
   
 module.exports.check = (req, res) ->
   promiseArray = []
